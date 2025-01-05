@@ -6,7 +6,7 @@ library(readr)
 library(magrittr)
 library(readxl)
 
-utils::globalVariables(c("agent_branch", "agent_team", "policy_number", "payment_date"))
+utils::globalVariables(c("agent_branch", "agent_team", "policy_number", "payment_date","scb","agency","allocation_month"))
 
 #' A function that imports all payment
 #'
@@ -18,7 +18,7 @@ utils::globalVariables(c("agent_branch", "agent_team", "policy_number", "payment
 #'
 #' @importFrom lubridate ymd mdy year month
 #'
-#' @importFrom dplyr mutate mutate_at vars matches filter group_by ungroup case_when if_else left_join
+#' @importFrom dplyr mutate mutate_at vars matches filter group_by ungroup case_when if_else left_join select
 #'
 #' @importFrom janitor make_clean_names
 #'
@@ -31,9 +31,7 @@ utils::globalVariables(c("agent_branch", "agent_team", "policy_number", "payment
 #' @importFrom readxl read_excel
 #'
 #' @examples
-#'
-#' prod_month <- as.Date('2024-11-01')
-#' read_pmt(prod_month)
+#' read_pmt(as.Date('2024-11-01'))
 read_pmt <- function(prod_month, data_after = as.Date('2013-01-01')) {
 
 month_year <- paste0(toupper(month(prod_month, label = TRUE)), year(prod_month))
@@ -88,6 +86,22 @@ df <- read_delim(file_path,
     ),
     by = 'product_code',
     keep = FALSE
+  ) %>%
+  left_join(
+    read_excel(
+      paste0(getwd(),"/dim_files/datetable.xlsx"),
+      trim_ws = TRUE,
+      .name_repair = make_clean_names,
+      sheet = "dateTable"
+    ),
+    by = c('transaction_date'='datekey'),
+    keep = FALSE
+  ) %>%
+  mutate(
+    allocation_month = if_else(str_detect(agent_branch,"SC BANCAS"),scb,agency)
+  ) %>%
+  select(
+    -c(scb,agency)
   )
 
 return(df)
