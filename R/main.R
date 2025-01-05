@@ -33,7 +33,7 @@ utils::globalVariables(c("agent_branch", "agent_team", "policy_number", "payment
 read_pmt <- function(prod_month) {
 
 month_year <- paste0(toupper(month(prod_month, label = TRUE)), year(prod_month))
-root_folder <- paste0("c:/Users/kknya/Documents/z_data/data_prep/raw_data/",
+root_folder <- paste0(getwd(),"/raw_data/",
                       month_year,
                       "/")
 check_file <- str_detect(dir(root_folder), paste0("PAYMENT", ".*", month_year, ".txt$"))
