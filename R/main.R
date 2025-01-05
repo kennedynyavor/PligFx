@@ -18,7 +18,7 @@ utils::globalVariables(c("agent_branch", "agent_team", "policy_number", "payment
 #'
 #' @importFrom lubridate ymd mdy year month
 #'
-#' @importFrom dplyr mutate mutate_at vars matches filter group_by ungroup case_when if_else
+#' @importFrom dplyr mutate mutate_at vars matches filter group_by ungroup case_when if_else left_join
 #'
 #' @importFrom janitor make_clean_names
 #'
@@ -27,6 +27,8 @@ utils::globalVariables(c("agent_branch", "agent_team", "policy_number", "payment
 #' @importFrom readr read_delim
 #'
 #' @importFrom magrittr %>%
+#'
+#' @importFrom readxl read_excel
 #'
 #' @examples
 #'
