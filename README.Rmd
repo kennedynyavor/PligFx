@@ -25,8 +25,8 @@ The goal of pligFx is to ...
 You can install the development version of pligFx from [GitHub](https://github.com/) with:
 
 ``` r
-# install.packages("pak")
-pak::pak("kennedynyavor/PligFx")
+# install.packages("devtools")
+devtools::install_github("kennedynyavor/PligFx",force = TRUE)
 ```
 
 ## Example
@@ -35,21 +35,24 @@ This is a basic example which shows you how to solve a common problem:
 
 ```{r example}
 library(pligFx)
+library(tidyverse)
 ## basic example code
 ```
 
-What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so:
+The `read_pmt` function imports the all payment data seemlessly and performs all neccesary joins internally. It takes the production month and a `data_after` parameter. Data_after is used to filter the all payment data (payment_date >= data_after).
 
 ```{r cars}
-summary(cars)
+setwd("~/z_data/data_prep/")
+df <- read_pmt(as.Date("2024-11-01"))
 ```
 
-You'll still need to render `README.Rmd` regularly, to keep `README.md` up-to-date. `devtools::build_readme()` is handy for this.
-
-You can also embed plots, for example:
+Check the import
 
 ```{r pressure, echo = FALSE}
-plot(pressure)
+df %>% 
+  group_by(allocation_month,product_type) %>% 
+  summarise(GwP = sum(amount)) %>% 
+  filter(year(allocation_month)==2016)
 ```
 
 In that case, don't forget to commit and push the resulting figure files, so they display on GitHub and CRAN.
