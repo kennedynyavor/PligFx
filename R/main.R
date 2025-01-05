@@ -10,6 +10,7 @@ utils::globalVariables(c("agent_branch", "agent_team", "policy_number", "payment
 #' A function that imports all payment
 #'
 #' @param prod_month The production month
+#' @param data_after A cut off data to filter the data by
 #'
 #' @returns A data frame of all payment data
 #' @export
@@ -30,7 +31,7 @@ utils::globalVariables(c("agent_branch", "agent_team", "policy_number", "payment
 #'
 #' prod_month <- as.Date('2024-11-01')
 #' read_pmt(prod_month)
-read_pmt <- function(prod_month) {
+read_pmt <- function(prod_month, data_after = as.Date('2013-01-01')) {
 
 month_year <- paste0(toupper(month(prod_month, label = TRUE)), year(prod_month))
 root_folder <- paste0(getwd(),"/raw_data/",
@@ -73,6 +74,9 @@ df <- read_delim(file_path,
         .default = "Agency"
 
       )
+  ) %>%
+  filter(
+    payment_date >= data_after
   )
 return(df)
 }
