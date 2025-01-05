@@ -6,7 +6,7 @@ library(readr)
 library(magrittr)
 library(readxl)
 
-utils::globalVariables(c("agent_branch", "agent_team", "policy_number", "payment_date","scb","agency","allocation_month"))
+utils::globalVariables(c("agent_branch", "agent_team", "policy_number", "payment_date","scb","agency","allocation_month","date_key"))
 
 #' A function that imports all payment
 #'
@@ -40,6 +40,7 @@ root_folder <- paste0(getwd(),"/raw_data/",
                       "/")
 check_file <- str_detect(dir(root_folder), paste0("PAYMENT", ".*", month_year, ".txt$"))
 
+if(sum(check_file*1) == 1){
 
 file_path <- paste0(root_folder, dir(root_folder)[check_file])
 
@@ -108,5 +109,10 @@ df <- read_delim(file_path,
     -c(scb,agency)
   )
 
-return(df)
+  return(df)
+} else {
+  print("Data not Found")
+  return("No Data Found")
+}
+
 }
