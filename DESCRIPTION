@@ -1,6 +1,6 @@
 Package: pligFx
 Title: A package that has custom functions for importing PLIG data
-Version: 0.0.0.9000
+Version: 0.0.1.0000
 Authors@R: 
     person("Kennedy", "Nyavor", , "dev.nyavor@gmail.com", role = c("aut", "cre"))
 Description: A powerful package that has simplified and customize data importation.
