@@ -4,6 +4,7 @@ library(stringr)
 library(janitor)
 library(readr)
 library(magrittr)
+library(readxl)
 
 utils::globalVariables(c("agent_branch", "agent_team", "policy_number", "payment_date"))
 
@@ -71,12 +72,21 @@ df <- read_delim(file_path,
         str_detect(agent_branch, "PRU.*ADVISOR") ~ "PruAdvisor",
         str_detect(agent_branch, "TELESALES") ~ "TELESALES",
         str_detect(agent_branch, "BROKER|RISCOVERY|CONSULT") ~ "Broker",
-        .default = "Agency"
-
-      )
+        .default = "Agency"),
+    product_code = str_sub(policy_number,1,4)
   ) %>%
   filter(
     payment_date >= data_after
+  ) %>%
+  left_join(
+    read_excel(
+      paste0(getwd(),"/dim_files/product_details.xlsx"),
+      trim_ws = TRUE,
+      .name_repair = make_clean_names
+    ),
+    by = 'product_code',
+    keep = FALSE
   )
+
 return(df)
 }
