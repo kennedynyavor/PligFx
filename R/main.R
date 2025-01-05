@@ -107,6 +107,9 @@ df <- read_delim(file_path,
   ) %>%
   select(
     -c(scb,agency)
+  ) %>%
+  filter(
+    allocation_month <= prod_month
   )
 
   return(df)
