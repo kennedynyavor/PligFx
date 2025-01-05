@@ -93,8 +93,12 @@ df <- read_delim(file_path,
       trim_ws = TRUE,
       .name_repair = make_clean_names,
       sheet = "dateTable"
+    ) %>% mutate(
+      date_key = ymd(date_key),
+      agency = ymd(agency),
+      scb = ymd(scb)
     ),
-    by = c('transaction_date'='datekey'),
+    by = c('transaction_date'='date_key'),
     keep = FALSE
   ) %>%
   mutate(
