@@ -1,6 +1,11 @@
 library(lubridate)
-library(tidyverse)
+library(dplyr)
+library(stringr)
 library(janitor)
+library(readr)
+library(magrittr)
+
+utils::globalVariables(c("agent_branch", "agent_team", "policy_number", "payment_date"))
 
 #' A function that imports all payment
 #'
@@ -9,14 +14,21 @@ library(janitor)
 #' @returns A data frame of all payment data
 #' @export
 #'
-#' @import lubridate
+#' @importFrom lubridate ymd mdy year month
 #'
-#' @import tidyverse
+#' @importFrom dplyr mutate mutate_at vars matches filter group_by ungroup case_when if_else
 #'
-#' @import janitor
+#' @importFrom janitor make_clean_names
+#'
+#' @importFrom stringr str_detect str_sub
+#'
+#' @importFrom readr read_delim
+#'
+#' @importFrom magrittr %>%
 #'
 #' @examples
-#' prod_month <- ymd('2024-11-01')
+#'
+#' prod_month <- as.Date('2024-11-01')
 #' read_pmt(prod_month)
 read_pmt <- function(prod_month) {
 

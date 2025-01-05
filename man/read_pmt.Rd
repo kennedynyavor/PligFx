@@ -16,6 +16,7 @@ A data frame of all payment data
 A function that imports all payment
 }
 \examples{
-prod_month <- ymd('2024-11-01')
+
+prod_month <- as.Date('2024-11-01')
 read_pmt(prod_month)
 }
